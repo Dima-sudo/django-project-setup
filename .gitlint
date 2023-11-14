@@ -1,0 +1,12 @@
+[general]
+verbosity = 3
+ignore = B1,B2,B3,B4,B5,B6
+
+# Ensure title follows conventions, in the format of 'Action: Message' or 'Action(Scope): Message',
+# i.e feat(ticket-number): commit message
+[title-match-regex]
+regex=^(fix|feat|chore|docs|style|refactor|perf|test)(\([a-zA-Z0-9_-]+\))?:\s.+$
+
+# Ensure the title is minimum 5 characters of length
+[title-min-length]
+min-length=5

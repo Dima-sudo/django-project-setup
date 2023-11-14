@@ -1,0 +1,50 @@
+{
+  "name": "app",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/app",
+
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash"
+          }
+        },
+        "python.pythonPath": "/app/venv/app_venv/bin/python",
+        "python.formatting.isortPath": "/app/venv/app_venv/bin/isort"
+      },
+
+      "extensions": [
+        "donjayamanne.python-extension-pack",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "batisteo.vscode-django",
+        "robertohuertasm.vscode-icons",
+        "oderwat.indent-rainbow",
+        "tamasfe.even-better-toml",
+        "charliermarsh.ruff",
+        "ms-python.isort",
+        "ms-python.black-formatter",
+        "shakram02.bash-beautify",
+        "rogalmic.bash-debug",
+        "mads-hartmann.bash-ide-vscode",
+        "castello-dev.bash-snippets",
+        "VisualStudioExptTeam.vscodeintellicode",
+        "KevinRose.vsc-python-indent",
+        "LittleFoxTeam.vscode-python-test-adapter",
+        "TabNine.tabnine-vscode",
+        "aaron-bond.better-comments",
+        "mechatroner.rainbow-csv",
+        "wayou.vscode-todo-highlight",
+        "emilast.LogFileHighlighter",
+        "cweijan.vscode-redis-client",
+        "redhat.vscode-yaml"
+      ]
+    }
+  },
+  "forwardPorts": [8000],
+
+  "postCreateCommand": "make install_dev"
+}

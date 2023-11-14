@@ -1,0 +1,72 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "app"
+version = "1.0"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = ["django>=4.2.3",
+                "djangorestframework>=3.14.0",
+                "django-filter>=23.2",
+                "markdown>=3.4.4",
+                "pandas>=2.0.0",
+                "celery>=5.3.1",
+                "django-celery-results>=2.5.1",
+                "python-dotenv>=1.0.0",
+                "psycopg2",
+                "drf-spectacular>=0.26.4"]
+
+[project.optional-dependencies]
+dev = [
+  "black>=22.10.0",
+  "ruff>=0.0.284",
+  "isort>=5.12.0",
+  "psycopg2-binary",
+  "pre-commit>=3.4.0",
+  "gitlint"
+]
+
+# Ruff
+[tool.ruff]
+ignore = ["E501"]
+select = ["E", "F", "I", "W"]
+line-length = 79
+fixable = ["I"]
+exclude = [".env", ".venv", "venv", "notebooks", "app.egg-info"]
+show-source = true
+
+# Black
+[tool.black]
+line-length = 79
+extend-exclude = '''
+/(
+  | .env
+  | .venv
+  | venv
+  | notebooks
+)/
+'''
+target-version = ['py311']
+
+# iSort
+[tool.isort]
+profile = "black"
+line_length = 79
+known_first_party = [
+    "tests",
+    "scripts",
+    "hooks",
+]
+
+[tool.coverage.paths]
+source = ["src"]
+
+[tool.coverage.run]
+branch = true
+relative_files = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80

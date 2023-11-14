@@ -1,0 +1,71 @@
+version: "3.9"
+
+services:
+  app:
+    build:
+      context: .
+      args:
+        - DEV=${IS_DEV}
+    restart: always
+    ports:
+      - "${APP_PORT}:8000"
+    volumes:
+      - "./src:/app/src"
+      - "./scripts:/app/scripts"
+      - "./Makefile:/app/Makefile"
+      - "./pyproject.toml:/app/pyproject.toml"
+      - "./Dockerfile:/app/Dockerfile"
+    depends_on:
+      - postgres-main
+      - rabbitmq
+      - celery
+    command: >
+      sh -c ". /app/venv/app_venv/bin/activate &&
+            python3 /app/src/manage.py migrate &&
+            python3 /app/src/manage.py runserver 0.0.0.0:8000"
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - IS_DEV=${IS_DEV}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+
+  postgres-main:
+    image: postgres:15-alpine3.18
+    restart: always
+    volumes:
+      - postgres-main-db-data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+
+  rabbitmq:
+    image: "rabbitmq:management"
+    ports:
+      - "${RABBIT_MQ_MANAGEMENT_PORT}:15672"
+      - "${RABBIT_MQ_PORT}:5672"
+
+  celery:
+    build: .
+    command: >
+      sh -c ". /app/venv/app_venv/bin/activate &&
+            celery -A src.celery_config worker --loglevel=info"
+    volumes:
+      - "./src:/app/src"
+      - "./scripts:/app/scripts"
+      - "./Makefile:/app/Makefile"
+      - "./pyproject.toml:/app/pyproject.toml"
+    depends_on:
+      - rabbitmq
+    environment:
+      - DB_HOST=${DB_HOST}
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASS=${DB_PASS}
+      - IS_DEV=${IS_DEV}
+      - DJANGO_SECRET_KEY=${DJANGO_SECRET_KEY}
+
+volumes:
+  postgres-main-db-data:

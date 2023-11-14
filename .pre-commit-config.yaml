@@ -1,0 +1,25 @@
+repos:
+-   repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.3.0
+    hooks:
+    -   id: check-yaml  # Validates YAML files to ensure they can be loaded
+    -   id: debug-statements  # Checks for debug statements like pdb.set_trace()
+    -   id: check-added-large-files  # Prevents adding large files to the repository
+    -   id: check-json  # Validates JSON files
+    -   id: check-merge-conflict  # Checks for files that contain merge conflict strings
+    -   id: check-case-conflict  # Checks for case-insensitive file name clashes
+    -   id: check-executables-have-shebangs  # Checks that executables have shebangs
+-   repo: https://github.com/psf/black
+    rev: 22.10.0
+    hooks:
+    -   id: black
+- repo: https://github.com/astral-sh/ruff-pre-commit
+  rev: v0.0.287
+  hooks:
+    - id: ruff
+# For commit message style enforcement
+-   repo: https://github.com/jorisroovers/gitlint
+    rev: v0.15.0
+    hooks:
+    -   id: gitlint  # Linting for Git commit messages
+        stages: [commit-msg]
